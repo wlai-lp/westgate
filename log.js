@@ -28,4 +28,5 @@ exports.report = (jsonStrData, id) => {
         element.arrivalDate = (new Date(element.arrivalDate)).toLocaleDateString();
     });
     console.log(newArray);
+    return newArray;
 };

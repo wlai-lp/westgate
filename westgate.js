@@ -3,6 +3,39 @@ require('dotenv').config();
 const WESTGATE_PASSWORD = process.env.WESTGATE_PASSWORD;
 const WESTGATE_USERID = process.env.WESTGATE_USERID;
 
+async function getResults(sessionid){
+    const resort = require("./resort");
+    const log = require("./log");
+
+    let results = {};
+    let response = {};
+    response = await resort.search(sessionid, resort.BLUETREE);
+    results.bluetree = log.report(response.body, resort.BLUETREE);
+
+    response = await resort.search(sessionid, resort.LAKES);
+    log.report(response.body, resort.LAKES);
+
+    response = await resort.search(sessionid, resort.TOWNS);
+    log.report(response.body, resort.TOWNS);
+
+    response = await resort.search(sessionid, resort.VILLA);
+    log.report(response.body, resort.VILLA);
+    return results;
+}
+
+async function login(){
+    const bookRoom = require("./bookRoom");
+    const bookRoom2 = require("./bookRoom2");
+
+    let sessionid = await westgateLogin();
+    const responseCode = await bookRoom.bookRoom(sessionid);
+    console.log(responseCode);
+    const responseCode2 = await bookRoom2.bookRoom2(sessionid);
+    console.log(responseCode2);
+    return sessionid;
+
+}
+
 function westgateLogin() {
     return new Promise(function (resolve, reject) {
         var sessionId = "";
@@ -49,4 +82,6 @@ function westgateLogin() {
     });
 }
 
-module.exports = { westgateLogin };
+// module.exports = { westgateLogin };
+exports.login = login;
+exports.getResults = getResults;
