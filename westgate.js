@@ -13,13 +13,13 @@ async function getResults(sessionid){
     results.bluetree = log.report(response.body, resort.BLUETREE);
 
     response = await resort.search(sessionid, resort.LAKES);
-    log.report(response.body, resort.LAKES);
+    results.lakes = log.report(response.body, resort.LAKES);
 
     response = await resort.search(sessionid, resort.TOWNS);
-    log.report(response.body, resort.TOWNS);
+    results.towns = log.report(response.body, resort.TOWNS);
 
     response = await resort.search(sessionid, resort.VILLA);
-    log.report(response.body, resort.VILLA);
+    results.villa = log.report(response.body, resort.VILLA);
     return results;
 }
 
